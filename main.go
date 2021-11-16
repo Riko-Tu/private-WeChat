@@ -2,11 +2,15 @@ package main
 
 import (
 	"fmt"
+	"github.com/google/uuid"
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"testing"
-	"turan.com/WeChat-Private/middleware"
+	_ "turan.com/WeChat-Private/config"
+	"turan.com/WeChat-Private/database"
+	"turan.com/WeChat-Private/middleware/log"
 )
 
 func TestLevelUnmarshalUnknownText(t *testing.T) {
@@ -19,16 +23,29 @@ func TestLevelUnmarshalUnknownText(t *testing.T) {
 	fmt.Println(l.String())
 }
 
-func init() {
+func setUp() {
+
 	//日志初始化
-	err := middleware.LoggerInit("staging")
+	err := log.SetUp(viper.GetString("log.mode"))
 	if err != nil {
 		panic(fmt.Sprintf("logInitErr:%v", err.Error()))
 	}
 	zap.L().Info("123", zap.String("mna", "123"))
+
+	//数据库初始化
+	err = database.SetUp()
+	if err != nil {
+		panic(fmt.Sprintf("dataBaseInitErr:%v", err.Error()))
+	}
+	//路由初始化
+	//err = route.SetUp()
+	//if err!=nil {
+	//	panic(err.Error())
+	//}
 }
 
 func main() {
-	TestLevelUnmarshalUnknownText(&testing.T{})
-
+	//setUp()
+	u := uuid.New()
+	fmt.Println(u)
 }

@@ -1,0 +1,16 @@
+{"level":"INFO","ts":"2021-11-16 11:05:44","caller":"WeChat-Private/main.go:31","msg":"123","mna":"123"}
+{"level":"INFO","ts":"2021-11-16 11:07:26","caller":"WeChat-Private/main.go:31","msg":"123","mna":"123"}
+{"level":"INFO","ts":"2021-11-16 12:42:55","caller":"WeChat-Private/main.go:40","msg":"123","mna":"123"}
+{"level":"INFO","ts":"2021-11-16 12:46:55","caller":"WeChat-Private/main.go:41","msg":"123","mna":"123"}
+{"level":"INFO","ts":"2021-11-16 12:48:22","caller":"WeChat-Private/main.go:38","msg":"123","mna":"123"}
+{"level":"INFO","ts":"2021-11-16 15:16:04","caller":"WeChat-Private/main.go:32","msg":"123","mna":"123"}
+{"level":"INFO","ts":"2021-11-16 15:16:24","caller":"WeChat-Private/main.go:32","msg":"123","mna":"123"}
+{"level":"INFO","ts":"2021-11-16 15:17:13","caller":"WeChat-Private/main.go:32","msg":"123","mna":"123"}
+{"level":"INFO","ts":"2021-11-16 16:02:55","caller":"WeChat-Private/main.go:32","msg":"123","mna":"123"}
+{"level":"INFO","ts":"2021-11-16 16:04:05","caller":"WeChat-Private/main.go:32","msg":"123","mna":"123"}
+{"level":"INFO","ts":"2021-11-16 16:18:05","caller":"WeChat-Private/main.go:32","msg":"123","mna":"123"}
+{"level":"DEBUG","ts":"2021-11-16 16:18:05","caller":"database/mysql.go:26","msg":"","Success Connect to dataBase":"root:123456@tcp(127.0.0.1:3306)/private-chat?charset=utf8mb4&parseTime=True&loc=Local"}
+{"level":"\u001b[34minfo\u001b[0m","ts":"2021-11-16 16:25:06","caller":"WeChat-Private/main.go:32","msg":"123","mna":"123"}
+{"level":"\u001b[35mdebug\u001b[0m","ts":"2021-11-16 16:25:06","caller":"database/mysql.go:26","msg":"Success Connect to dataBase"}
+{"level":"INFO","ts":"2021-11-16 16:25:25","caller":"WeChat-Private/main.go:32","msg":"123","mna":"123"}
+{"level":"DEBUG","ts":"2021-11-16 16:25:25","caller":"database/mysql.go:26","msg":"Success Connect to dataBase"}
