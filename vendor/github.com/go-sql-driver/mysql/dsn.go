@@ -375,7 +375,7 @@ func parseDSNParams(cfg *Config, params string) (err error) {
 
 		// cfg params
 		switch value := param[1]; param[0] {
-		// Disable INFILE allowlist / enable all files
+		// Disable INFILE whitelist / enable all files
 		case "allowAllFiles":
 			var isBool bool
 			cfg.AllowAllFiles, isBool = readBool(value)
@@ -426,6 +426,7 @@ func parseDSNParams(cfg *Config, params string) (err error) {
 		// Collation
 		case "collation":
 			cfg.Collation = value
+			break
 
 		case "columnsWithAlias":
 			var isBool bool

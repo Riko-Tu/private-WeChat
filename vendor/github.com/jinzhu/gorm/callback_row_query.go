@@ -28,6 +28,10 @@ func rowQueryCallback(scope *Scope) {
 			scope.SQL = fmt.Sprint(str) + scope.SQL
 		}
 
+		if str, ok := scope.Get("gorm:query_option"); ok {
+			scope.SQL += addExtraSpaceIfExist(fmt.Sprint(str))
+		}
+
 		if rowResult, ok := result.(*RowQueryResult); ok {
 			rowResult.Row = scope.SQLDB().QueryRow(scope.SQL, scope.SQLVars...)
 		} else if rowsResult, ok := result.(*RowsQueryResult); ok {

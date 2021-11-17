@@ -13,7 +13,6 @@ import (
 	"crypto/tls"
 	"database/sql/driver"
 	"encoding/binary"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -349,12 +348,6 @@ func (mc *mysqlConn) writeHandshakeResponsePacket(authResp []byte, plugin string
 		return errors.New("unknown collation")
 	}
 
-	// Filler [23 bytes] (all 0x00)
-	pos := 13
-	for ; pos < 13+23; pos++ {
-		data[pos] = 0
-	}
-
 	// SSL Connection Request Packet
 	// http://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::SSLRequest
 	if mc.cfg.tls != nil {
@@ -371,6 +364,12 @@ func (mc *mysqlConn) writeHandshakeResponsePacket(authResp []byte, plugin string
 		mc.rawConn = mc.netConn
 		mc.netConn = tlsConn
 		mc.buf.nc = tlsConn
+	}
+
+	// Filler [23 bytes] (all 0x00)
+	pos := 13
+	for ; pos < 13+23; pos++ {
+		data[pos] = 0
 	}
 
 	// User [null terminated string]
@@ -761,40 +760,40 @@ func (rows *textRows) readRow(dest []driver.Value) error {
 	}
 
 	// RowSet Packet
-	var (
-		n      int
-		isNull bool
-		pos    int = 0
-	)
+	var n int
+	var isNull bool
+	pos := 0
 
 	for i := range dest {
 		// Read bytes and convert to string
 		dest[i], isNull, n, err = readLengthEncodedString(data[pos:])
 		pos += n
+		if err == nil {
+			if !isNull {
+				if !mc.parseTime {
+					continue
+				} else {
+					switch rows.rs.columns[i].fieldType {
+					case fieldTypeTimestamp, fieldTypeDateTime,
+						fieldTypeDate, fieldTypeNewDate:
+						dest[i], err = parseDateTime(
+							string(dest[i].([]byte)),
+							mc.cfg.Loc,
+						)
+						if err == nil {
+							continue
+						}
+					default:
+						continue
+					}
+				}
 
-		if err != nil {
-			return err
-		}
-
-		if isNull {
-			dest[i] = nil
-			continue
-		}
-
-		if !mc.parseTime {
-			continue
-		}
-
-		// Parse time field
-		switch rows.rs.columns[i].fieldType {
-		case fieldTypeTimestamp,
-			fieldTypeDateTime,
-			fieldTypeDate,
-			fieldTypeNewDate:
-			if dest[i], err = parseDateTime(dest[i].([]byte), mc.cfg.Loc); err != nil {
-				return err
+			} else {
+				dest[i] = nil
+				continue
 			}
 		}
+		return err // err != nil
 	}
 
 	return nil
@@ -1004,9 +1003,6 @@ func (stmt *mysqlStmt) writeExecutePacket(args []driver.Value) error {
 				continue
 			}
 
-			if v, ok := arg.(json.RawMessage); ok {
-				arg = []byte(v)
-			}
 			// cache types and values
 			switch v := arg.(type) {
 			case int64:
@@ -1116,10 +1112,7 @@ func (stmt *mysqlStmt) writeExecutePacket(args []driver.Value) error {
 				if v.IsZero() {
 					b = append(b, "0000-00-00"...)
 				} else {
-					b, err = appendDateTime(b, v.In(mc.cfg.Loc))
-					if err != nil {
-						return err
-					}
+					b = v.In(mc.cfg.Loc).AppendFormat(b, timeFormat)
 				}
 
 				paramValues = appendLengthEncodedInteger(paramValues,
