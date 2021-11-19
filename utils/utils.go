@@ -18,28 +18,31 @@ func VerifyEmail(email string) bool {
 }
 
 //获取验证码
-func getCode() int {
-	i := rand.Int()
-	return i
-
+func GetCode() string {
+	var codeStr string
+	for i := 0; i < 6; i++ {
+		code, _ := strconv.Atoi(fmt.Sprintf("%d", rand.Intn(9)))
+		codeStr += fmt.Sprintf("%d", code)
+	}
+	return codeStr
 }
 
-//发送邮件
-func SendEmail(addressEmail string) {
-	from := viper.GetString("smtp.from")
-	host := viper.GetString("smtp.qq.host")
-	port, _ := strconv.Atoi(viper.GetString("smtp.qq.port"))
-	username := viper.GetString("smtp.qq.username")
-	password := viper.GetString("smtp.qq.password")
+var (
+	from     = viper.GetString("smtp.from")
+	host     = viper.GetString("smtp.qq.host")
+	port, _  = strconv.Atoi(viper.GetString("smtp.qq.port"))
+	username = viper.GetString("smtp.qq.username")
+	password = viper.GetString("smtp.qq.password")
+)
 
-	m := gomail.NewMessage()
+//发送邮件
+func SendEmail(addressEmail string, code string) error {
+	m := gomail.NewMessage()            //获取邮件对象
 	m.SetHeader("From", from)           //发件人
 	m.SetHeader("To", addressEmail)     //收件人
 	m.SetHeader("Subject", "chat【验证码】") //标题
-	m.SetBody("text/html", "hello")
+	m.SetBody("text/html", fmt.Sprintf("你的验证码是%s", code))
 
 	d := gomail.Dialer{Host: host, Port: port, Username: username, Password: password}
-	if err := d.DialAndSend(m); err != nil { //发送失败报错
-		fmt.Println(err.Error())
-	}
+	return d.DialAndSend(m)
 }
