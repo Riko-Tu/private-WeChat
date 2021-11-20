@@ -8,7 +8,7 @@ import (
 func route(e *gin.Engine) {
 	user := e.Group("/user")
 	user.POST("/emailLogin", controller.EmailLogin)
-	user.GET("/getEmailCode/:email", controller.GetEmailCode)
+	user.POST("/getEmailCode", controller.GetEmailCode)
 	user.GET("/g")
 }
 

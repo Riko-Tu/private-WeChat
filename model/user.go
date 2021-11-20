@@ -1,26 +1,35 @@
 package model
 
-import "time"
+import (
+	"time"
+	"turan.com/WeChat-Private/database"
+)
 
 type user struct {
-	id         int
-	name       string
-	uid        int8
-	birthday   time.Time
-	area       string
-	email      string
-	slogan     string
-	telephone  string
-	password   string
-	createTime time.Time
-	updateTime time.Time
-	deleteTime time.Time
+	id         int 			`gorm:"column:id,type:primaryKey"`
+	name       string		`gorm:"column:name"`
+	uid        int8			`gorm:"column:uid"`
+	birthday   time.Time	`gorm:"column:birthday"`
+	area       string		`gorm:"column:area"`
+	email      string		`gorm:"column:email"`
+	slogan     string		`gorm:"column:slogan"`
+	telephone  string		`gorm:"column:telephone"`
+	password   string		`gorm:"column:"`
+	createTime time.Time	`gorm:"column:"`
+	updateTime time.Time	`gorm:"column:"`
+	deleteTime time.Time	`gorm:"column:"`
 }
 
-//生成UID
+//返回表名
+func getUserTableName() string {
+	return "user"
+}
 
-//用户email注册
+//用户Email注册
+func EmailRegister()  {
+	database.GetDB().Model(getUserTableName()).
 
+}
 //获取用户信息
 
 //修改手机号

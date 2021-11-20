@@ -1,4 +1,5 @@
 log:
+  path: ./report/
   MaxSize: 100
   MaxAge: 30
   level: debug
@@ -34,4 +35,29 @@ private-chat:
         max: 20
         min: 5
 
+redis:
+  host: 127.0.0.1:6379
+  auth: 12345
+  db: 0
+  pool:
+    max: 20
+    min: 3
+  taskBrokerDB: 10
+  taskResultBackendDB: 11
+  latexTaskBrokerDB: 8
+  latexTaskResultBackendDB: 9
 
+
+smtp:
+  from: 1500676800@qq.com
+  qq:
+    host: smtp.qq.com
+    port: 25             # SSL协议端口：465/994
+    username: 1500676800
+    password: oongfnnuwjnfhfgi          #这里是授权码
+
+  wy:
+    host: smtp.163.com
+    port: 25
+    username:
+    password:

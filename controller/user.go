@@ -3,6 +3,8 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"turan.com/WeChat-Private/logic"
+	"turan.com/WeChat-Private/utils"
 )
 
 func EmailLogin(c *gin.Context) {
@@ -10,6 +12,13 @@ func EmailLogin(c *gin.Context) {
 }
 
 func GetEmailCode(c *gin.Context) {
-	email := c.Param("email")
-	c.JSONP(http.StatusOK, gin.H{"email": email})
+	//通过post表的的key获取参数
+	email := c.PostForm("email") //body中添加email字段
+	isPass := utils.VerifyEmail(email)
+	if isPass {
+		//发送邮件
+		msg := logic.SendEmail(email)
+		logicReply(c, msg)
+	}
+	CodeMsgReply(c, EmailErr)
 }

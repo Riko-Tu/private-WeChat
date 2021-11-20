@@ -1,0 +1,17 @@
+# Binaries, plugins, libs
+*.dll
+*.dylib
+*.exe
+*.exe~
+*.so
+.DS_Store
+
+# Testing
+*.test
+*.tmp
+test
+main.go
+.idea
+vendor
+gotty
+report

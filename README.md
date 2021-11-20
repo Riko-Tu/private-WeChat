@@ -10,6 +10,8 @@ go get -u github.com/kardianos/govendor  //安装包管理工具vendor
 ## pull package
 ~~~txt
 go mod vendor       // 拉取项目依赖库
+或
+go build -mod=vendor
 ~~~
 
 ## add package
