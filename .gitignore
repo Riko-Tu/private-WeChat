@@ -12,7 +12,6 @@
 test
 main.go
 .idea
-config/*.yaml
 vendor
 gotty
-log
+report

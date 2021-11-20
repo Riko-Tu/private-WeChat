@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/viper"
 	"gopkg.in/gomail.v2"
 	"math/rand"
@@ -38,11 +39,23 @@ var (
 //发送邮件
 func SendEmail(addressEmail string, code string) error {
 	m := gomail.NewMessage()            //获取邮件对象
-	m.SetHeader("From", from)           //发件人
-	m.SetHeader("To", addressEmail)     //收件人
+	m.SetHeader("From", from)           //发件人邮箱
+	m.SetHeader("To", addressEmail)     //收件人邮箱
 	m.SetHeader("Subject", "chat【验证码】") //标题
 	m.SetBody("text/html", fmt.Sprintf("你的验证码是%s", code))
 
 	d := gomail.Dialer{Host: host, Port: port, Username: username, Password: password}
 	return d.DialAndSend(m)
+}
+
+//uuid生成
+func GetUuid(email string) uuid.UUID {
+	//随机生成一个UUID
+	v1, err := uuid.NewV1()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	//将随机的uuid与邮箱结合
+	v3 := uuid.NewV3(v1, email)
+	return v3
 }
