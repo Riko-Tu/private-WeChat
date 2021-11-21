@@ -10,7 +10,6 @@
 *.test
 *.tmp
 test
-main.go
 .idea
 vendor
 gotty

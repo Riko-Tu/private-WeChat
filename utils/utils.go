@@ -2,7 +2,7 @@ package utils
 
 import (
 	"fmt"
-	uuid "github.com/satori/go.uuid"
+	"github.com/satori/go.uuid"
 	"github.com/spf13/viper"
 	"gopkg.in/gomail.v2"
 	"math/rand"
@@ -51,11 +51,8 @@ func SendEmail(addressEmail string, code string) error {
 //uuid生成
 func GetUuid(email string) uuid.UUID {
 	//随机生成一个UUID
-	v1, err := uuid.NewV1()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	v := uuid.NewV1()
 	//将随机的uuid与邮箱结合
-	v3 := uuid.NewV3(v1, email)
+	v3 := uuid.NewV3(v, email)
 	return v3
 }
