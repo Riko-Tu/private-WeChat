@@ -15,12 +15,11 @@ func SendEmail(email string) LogicMsg {
 
 		//存储email与uid
 		err := model.EmailRegister(email)
-		if err !=nil{
+		if err != nil {
 			return SendEmailFailed
 		}
 
 	}
-
 
 	//存储验证码
 	err := dao.SaveCode(email, code)

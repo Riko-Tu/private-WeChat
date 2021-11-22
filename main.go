@@ -12,7 +12,6 @@ import (
 	"turan.com/WeChat-Private/database"
 	"turan.com/WeChat-Private/log"
 	"turan.com/WeChat-Private/route"
-	"turan.com/WeChat-Private/utils"
 )
 
 func TestLevelUnmarshalUnknownText(t *testing.T) {
@@ -51,6 +50,6 @@ func setUp() {
 }
 
 func main() {
-	//	setUp()
-	utils.GetUuidTest()
+	setUp()
+
 }

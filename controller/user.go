@@ -19,6 +19,8 @@ func GetEmailCode(c *gin.Context) {
 		//发送邮件
 		msg := logic.SendEmail(email)
 		logicReply(c, msg)
+		return
 	}
+	//校验错误返回，邮箱格式错误
 	CodeMsgReply(c, EmailErr)
 }

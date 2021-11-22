@@ -23,6 +23,7 @@ func SetUp() error {
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=%s&parseTime=True&loc=Local", user, password, host, dbName, charset)
 	db, err = gorm.Open("mysql", dsn)
+	db.SingularTable(true)
 	zap.L().Debug("Success Connect to dataBase")
 	return err
 

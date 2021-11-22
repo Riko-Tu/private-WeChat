@@ -14,6 +14,7 @@ type claims struct {
 	jwt.StandardClaims
 }
 
+//创建token
 func CreateToken(uid string) {
 	claims := &claims{
 		uid:   uid,
@@ -30,10 +31,21 @@ func CreateToken(uid string) {
 	*/
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
+	//token包含了，header与claims，通过singnedString进行密钥加密
 	signedString, err := token.SignedString([]byte("1231-23-21"))
 	if err != nil {
 		panic(err.Error())
 	}
 	//token, err := jwt.ParseWithClaims(token)
 	fmt.Println(signedString)
+}
+
+//解析token
+func ParseToken() {
+
+}
+
+//更新token过期时间
+func UpdateTokenExpiresTime() {
+
 }

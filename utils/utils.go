@@ -38,10 +38,10 @@ var (
 
 //发送邮件
 func SendEmail(addressEmail string, code string) error {
-	m := gomail.NewMessage()            //获取邮件对象
-	m.SetHeader("From", from)           //发件人邮箱
-	m.SetHeader("To", addressEmail)     //收件人邮箱
-	m.SetHeader("Subject", "chat【验证码】") //标题
+	m := gomail.NewMessage()                   //获取邮件对象
+	m.SetHeader("From", "wechat"+"<"+from+">") //发件人邮箱
+	m.SetHeader("To", addressEmail)            //收件人邮箱
+	m.SetHeader("Subject", "chat【验证码】")        //标题
 	m.SetBody("text/html", fmt.Sprintf("你的验证码是%s", code))
 
 	d := gomail.Dialer{Host: host, Port: port, Username: username, Password: password}
@@ -51,8 +51,8 @@ func SendEmail(addressEmail string, code string) error {
 //uuid生成
 func GetUuid(email string) uuid.UUID {
 	//随机生成一个UUID
-	v := uuid.NewV1()
+	v1 := uuid.NewV1()
 	//将随机的uuid与邮箱结合
-	v3 := uuid.NewV3(v, email)
+	v3 := uuid.NewV3(v1, email)
 	return v3
 }

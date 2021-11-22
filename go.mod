@@ -16,7 +16,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/viper v1.9.0
-	github.com/stretchr/testify v1.7.0 // indirect
+	github.com/stretchr/testify v1.7.0
 	github.com/ugorji/go v1.2.6 // indirect
 	go.uber.org/zap v1.19.1
 	golang.org/x/crypto v0.0.0-20211115234514-b4de73f9ece8 // indirect
