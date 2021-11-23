@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 //邮箱正则
@@ -20,12 +21,11 @@ func VerifyEmail(email string) bool {
 
 //获取验证码
 func GetCode() string {
-	var codeStr string
-	for i := 0; i < 6; i++ {
-		code, _ := strconv.Atoi(fmt.Sprintf("%d", rand.Intn(9)))
-		codeStr += fmt.Sprintf("%d", code)
-	}
-	return codeStr
+	//获取活种
+	nano := time.Now().UnixNano()
+	//每个种子对应一个随机值
+	rnd := rand.New(rand.NewSource(nano))
+	return fmt.Sprintf("%06v", rnd.Int31n(1000000))
 }
 
 var (
