@@ -15,8 +15,8 @@ func route(e *gin.Engine) {
 
 	//其他类别
 
-	a := e.Group("/api")
-	a.GET("/sister",API.GetSister)
+	a := e.Group("/api", AuthMiddleWare())
+	a.GET("/sister", API.GetSister)
 }
 
 func SetUp() error {

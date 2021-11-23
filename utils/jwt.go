@@ -51,7 +51,7 @@ func CreateToken(uid string) (string, error) {
 }
 
 //解析token
-func ParseToken(tokenString string) (claims jwt.Claims, err error) {
+func ParseToken(tokenString string) (claims jwt.MapClaims, err error) {
 	//解析token时，使用mapClaims类型来解析token的Claims类型
 	token, err := jwt.ParseWithClaims(tokenString, jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
 		//token使用byte加密，这里使用byte解密

@@ -15,7 +15,7 @@ var (
 	//存储token失败
 	SaveTokenFailed = LogicMsg{3004, "SaveTokenFailed"}
 	//token解析失败
-	TokenParseFailed = LogicMsg{3005, ""}
+	TokenParseFailed = LogicMsg{3005, "TokenParseFailed"}
 )
 var (
 	//发送邮件成功
