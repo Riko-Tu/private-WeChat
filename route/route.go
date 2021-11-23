@@ -15,12 +15,13 @@ func route(e *gin.Engine) {
 
 	//其他类别
 
-	a := e.Group("/api", AuthMiddleWare())
+	a := e.Group("/api", LogMiddleware(), AuthMiddleWare())
 	a.GET("/sister", API.GetSister)
 }
 
 func SetUp() error {
 	r := gin.Default()
+	gin.New().Use()
 	route(r)
 	err := r.Run("127.0.0.1:8080")
 	return err

@@ -1,6 +1,7 @@
 package API
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
@@ -8,17 +9,47 @@ import (
 	"time"
 )
 
+type ipInfo struct {
+	Status      string
+	Continent   string
+	Country     string
+	CountryCode string
+	RegionName  string
+	City        string
+	Zip         string
+	Lat         float32
+	Lon         float32
+	Timezone    string
+	Currency    string
+	Isp         string
+	Org         string
+	As          string
+	Reverse     string
+	Mobile      bool
+	Proxy       bool
+	Ip          string
+}
+
 //获取ip地址信息
-func GetIpInfo(ip string) {
-	url := fmt.Sprintf("https://api.techniknews.net/ipgeo/%s", ip)
+func GetIpInfo(address string) (*ipInfo, error) {
+	var ip = &ipInfo{}
+	url := fmt.Sprintf("https://api.techniknews.net/ipgeo/%s", address)
 	res, err := http.Get(url)
 	if err != nil {
-		fmt.Println(err.Error())
+		return nil, err
 	}
 	defer res.Body.Close()
+	//使用io的实现类，多去res的body
 	all, err := ioutil.ReadAll(res.Body)
-	fmt.Println(string(all))
-	//将string转成json 取值
+	if err != nil {
+		return nil, err
+	}
+	//将json反射到结构体
+	err = json.Unmarshal(all, ip)
+	if err != nil {
+		return nil, err
+	}
+	return ip, nil
 
 }
 
@@ -38,6 +69,7 @@ func Advice() {
 
 }
 
+//获取妹妹图片
 func GetSister(ctx *gin.Context) {
 	cleint := &http.Client{
 		Transport:     nil,

@@ -27,7 +27,7 @@ func GetUserStruct() *user {
 }
 
 //返回表名
-func getUserTableName() string {
+func (*user) TableName() string {
 	return "user"
 }
 
