@@ -5,6 +5,8 @@ log:
   level: debug
   mode: staging      #dev|staging
 
+secret: 1231das3fdsf-23123
+
 
 private-chat:
   host: 127.0.0.1
@@ -22,7 +24,7 @@ private-chat:
       max: 20
       min: 5
 
-  prod:
+  prod:         #生产配置
     host:
     port:
     mysql:

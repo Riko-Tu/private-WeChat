@@ -2,13 +2,22 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"turan.com/WeChat-Private/logic"
 	"turan.com/WeChat-Private/utils"
 )
 
 func EmailLogin(c *gin.Context) {
-	c.JSONP(http.StatusOK, 23)
+	email := c.PostForm("email")
+	//邮箱校验
+	isPass := utils.VerifyEmail(email)
+	if isPass {
+		//为真，进行登录
+		msg := logic.EmailLogin(email)
+		logicReply(c, msg)
+		return
+	}
+	//校验错误返回，邮箱格式错误
+	CodeMsgReply(c, EmailErr)
 }
 
 func GetEmailCode(c *gin.Context) {

@@ -2,9 +2,8 @@ package model
 
 import (
 	"fmt"
-	"go.uber.org/zap"
 	"time"
-	"turan.com/WeChat-Private/database"
+	"turan.com/WeChat-Private/dao/database"
 	"turan.com/WeChat-Private/utils"
 )
 
@@ -23,6 +22,10 @@ type user struct {
 	DeleteTime int64  `gorm:"column:delete_time"`
 }
 
+func GetUserStruct() *user {
+	return &user{}
+}
+
 //返回表名
 func getUserTableName() string {
 	return "user"
@@ -37,17 +40,13 @@ func GetId() {
 //用户注册:插入一条新数据，字段为零值，则不插入该子端
 func EmailRegister(email string) error {
 	uuid := utils.GetUuid(email)
+	//只插入邮箱，uid，和创建时间
 	var user = user{
 		Email:      email,
 		Uid:        uuid.String(),
 		CreateTime: time.Now().Unix(),
 	}
-	ups := make(map[string]interface{})
-	ups["email"] = email
-	ups["uid"] = uuid.String()
-	ups["create_time"] = time.Now()
 
-	zap.L().Debug(email)
 	err := database.GetDB().Create(&user).Error
 	if err != nil {
 		fmt.Println(err.Error())
@@ -57,8 +56,13 @@ func EmailRegister(email string) error {
 }
 
 //获取用户信息
-func GetUserInfo() {
-
+func GetUserById(id int) (*user, error) {
+	var user = &user{}
+	err := database.GetDB().Where("id = ?", id).First(user).Scan(user).Error
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }
 
 //修改手机号
@@ -69,10 +73,16 @@ func IsEmailExist(email string) bool {
 	//不存在时，返回错误
 	err := database.GetDB().Where("email=?", email).First(user).Error
 	if err != nil {
-		fmt.Println(err.Error())
 		return false
 	}
 	return true
+}
+
+//通过email获取uid
+func GetUid(email string) *user {
+	var user = &user{}
+	database.GetDB().Where("email = ?", email).First(user).Scan(user)
+	return user
 }
 
 //返回密码
