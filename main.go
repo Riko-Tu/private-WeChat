@@ -7,6 +7,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"testing"
+	"time"
 	"turan.com/WeChat-Private/cache"
 	_ "turan.com/WeChat-Private/config"
 	"turan.com/WeChat-Private/dao/database"
@@ -49,8 +50,18 @@ func setUp() {
 	}
 }
 
+type uvInfo struct {
+	Uv        float32   `json:"uv"`
+	UvTime    time.Time `json:"uv_time"`
+	UvMax     float32   `json:"uv_max"`
+	Ozone     float32   `json:"ozone"`
+	OzoneTime time.Time `json:"ozone_time"`
+}
+
 func main() {
 
 	setUp()
 
+	li := []interface{}{0}
+	fmt.Println(li[0])
 }

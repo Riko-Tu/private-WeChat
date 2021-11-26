@@ -2,6 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
+	API "turan.com/WeChat-Private/api"
 	"turan.com/WeChat-Private/dao/cache"
 	"turan.com/WeChat-Private/logic"
 	"turan.com/WeChat-Private/utils"
@@ -40,4 +42,19 @@ func GetEmailCode(c *gin.Context) {
 	}
 	//校验错误返回，邮箱格式错误
 	CodeMsgReply(c, EmailErr)
+}
+
+//
+func GetUv(ctx *gin.Context) {
+	lat, _ := ctx.Get("lat")
+	lon, _ := ctx.Get("lon")
+	uv, err := API.GetUv(lat.(float32), lon.(float32))
+	if err != nil {
+		ctx.JSON(http.StatusOK, gin.H{"msg": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"uv": uv[0],
+		"uv_time":     uv[1],
+		"uv_max":      uv[2],
+		"uv_max_time": uv[3]})
 }

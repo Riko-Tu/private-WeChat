@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"time"
+	"turan.com/WeChat-Private/utils"
 )
 
 type ipInfo struct {
@@ -30,9 +31,51 @@ type ipInfo struct {
 	Ip          string
 }
 
+type uvInfo struct {
+	result struct {
+		Uv        float32   `json:"uv"`
+		UvTime    time.Time `json:"uv_time"`
+		UvMax     float32   `json:"uv_max"`
+		Ozone     float32   `json:"ozone"`
+		OzoneTime time.Time `json:"ozone_time"`
+	}
+}
+
+//获取紫外线的数据
+func GetUv(lat, lng float32) ([]string, error) {
+	client := &http.Client{
+		Transport:     nil,
+		CheckRedirect: nil,
+		Jar:           nil,
+		Timeout:       5 * time.Second,
+	}
+	url := fmt.Sprintf("https://api.openuv.io/api/v1/uv?lat=%0.4f&lng=%0.4f", lat, lng)
+	request, err := http.NewRequest("", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	request.Header.Set("x-access-token", "8459cb92691474b6a92eeddb3cbe7be2")
+	res, err := client.Do(request)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+	if res.StatusCode != 200 {
+		return nil, fmt.Errorf("状态码：%d", res.StatusCode)
+	}
+	all, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	uvList := utils.JsonParseString(all)
+	return uvList, nil
+
+}
+
 //获取ip地址信息
 func GetIpInfo(address string) (*ipInfo, error) {
 	var ip = &ipInfo{}
+	fmt.Println(address)
 	url := fmt.Sprintf("https://api.techniknews.net/ipgeo/%s", address)
 	res, err := http.Get(url)
 	if err != nil {

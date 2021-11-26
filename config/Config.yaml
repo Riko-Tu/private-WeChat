@@ -6,6 +6,10 @@ log:
   mode: staging      #dev|staging
 
 secret: 1231das3fdsf-23123
+api:
+  uv: 8459cb92691474b6a92eeddb3cbe7be2
+  baidu: kYermFA2vFEkaf6CPgFoAv2ml5cFe0t2
+  alibb: 2e018efa22785ccffe6a24de60a8fc05
 
 
 private-chat:

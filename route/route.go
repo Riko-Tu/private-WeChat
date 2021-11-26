@@ -11,7 +11,7 @@ func route(e *gin.Engine) {
 	user := e.Group("/user")
 	user.POST("/emailLogin", controller.EmailLogin)
 	user.POST("/getEmailCode", controller.GetEmailCode)
-	user.GET("/g")
+	user.GET("/getUv", LogMiddleware(), controller.GetUv)
 
 	//其他类别
 

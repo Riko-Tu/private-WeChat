@@ -8,6 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-playground/validator/v10 v10.9.0 // indirect
 	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/gophercloud/gophercloud v0.1.0 // indirect
 	github.com/jinzhu/gorm v1.9.16
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
@@ -26,4 +27,7 @@ require (
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/ini.v1 v1.64.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
+	k8s.io/client-go v0.20.4 // indirect
+	k8s.io/klog v1.0.0 // indirect
+	sigs.k8s.io/structured-merge-diff v0.0.0-20190525122527-15d366b2352e // indirect
 )

@@ -10,6 +10,7 @@ import (
 	"turan.com/WeChat-Private/utils"
 )
 
+//token解析
 func AuthMiddleWare() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//从http请求中获取token
@@ -42,20 +43,25 @@ func LogMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		path := ctx.Request.URL.Path
 		method := ctx.Request.Method
-		host := ctx.Request.URL.Host
+		h := ctx.Request.Host
+		host := ctx.Request.RemoteAddr
+		ip := strings.Split(host, ":")[0]
+		ipInfo, err := API.GetIpInfo(h)
+		ctx.Set("lat", ipInfo.Lat)
+		ctx.Set("lon", ipInfo.Lon)
 		query := ctx.Request.URL.RawQuery
 		ctx.Next()
 		//等next函数执行完，回来时再存储日志
-		ipInfo, err := API.GetIpInfo(host)
+
 		if err != nil {
 			zap.L().Debug("", zap.String("path", path),
 				zap.String("method", method),
 				zap.String("query", query),
-				zap.String("host", host),
+				zap.String("ip", ip),
 				zap.String("getIpInfoErr", err.Error()))
 			return
 		}
-		zap.L().Debug("", zap.String("host", host),
+		zap.L().Debug("", zap.String("ip", ip),
 			zap.String("method", method),
 			zap.String("path", path),
 			zap.String("query", query),
