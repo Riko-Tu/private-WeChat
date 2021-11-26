@@ -69,9 +69,9 @@ func ImageUpload(imagePath, uid string) error {
 }
 
 //获取用户信息
-func GetUserById(id int) (*user, error) {
+func GetUserById(uid string) (*user, error) {
 	var user = &user{}
-	err := database.GetDB().Where("id = ?", id).First(user).Scan(user).Error
+	err := database.GetDB().Where("uid = ?", uid).First(user).Scan(user).Error
 	if err != nil {
 		return nil, err
 	}

@@ -85,3 +85,12 @@ func UpLoadImage(ctx *gin.Context) {
 	}
 	ctx.String(http.StatusOK, fmt.Sprintf("%s 上传成功", file.Filename))
 }
+
+func GetUser(ctx *gin.Context) {
+	uid, _ := ctx.Get("uid")
+	user, err := model.GetUserById(uid.(string))
+	if err != nil {
+		ctx.JSON(http.StatusOK, gin.H{"msg": err.Error()})
+	}
+	ctx.JSON(http.StatusOK, gin.H{"data": user})
+}
