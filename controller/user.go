@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"net/http"
+	"strings"
 	API "turan.com/WeChat-Private/api"
 	"turan.com/WeChat-Private/dao/cache"
 	"turan.com/WeChat-Private/logic"
@@ -72,18 +73,29 @@ func UpLoadImage(ctx *gin.Context) {
 	}
 	zap.L().Debug(file.Filename)
 	//dst：upload文件夹必须存在
-	dst := "upload/" + uid.(string) + file.Filename
+	fileName := uid.(string)[:6] + strings.Replace(file.Filename, " ", "", -1)
+	dst := "upload/" + fileName
+
 	err = ctx.SaveUploadedFile(file, dst)
 	if err != nil {
 		ctx.JSON(http.StatusOK, gin.H{"msg": err.Error()})
 	}
 	//根据uid存储数据库
-	err = model.ImageUpload(fmt.Sprintf("http://127.0.0.1:8080/user/image/%s", dst), uid.(string))
+	err = model.ImageUpload(fmt.Sprintf("http://127.0.0.1:8080/user/getImage/%s", fileName), uid.(string))
 	if err != nil {
 		ctx.String(http.StatusOK, err.Error())
 		return
 	}
 	ctx.String(http.StatusOK, fmt.Sprintf("%s 上传成功", file.Filename))
+}
+
+//获取用户头像
+func GetUserImage(ctx *gin.Context) {
+	//uid, _ := ctx.Get("uid")
+	filePath := ctx.Param("path")
+
+	ctx.File("./upload/" + filePath)
+
 }
 
 func GetUser(ctx *gin.Context) {
