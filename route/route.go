@@ -12,6 +12,7 @@ func route(e *gin.Engine) {
 	user.POST("/emailLogin", controller.EmailLogin)
 	user.POST("/getEmailCode", controller.GetEmailCode)
 	user.GET("/getUv", LogMiddleware(), controller.GetUv)
+	user.POST("/uploadImage", LogMiddleware(), AuthMiddleWare(), controller.UpLoadImage)
 
 	//其他类别
 

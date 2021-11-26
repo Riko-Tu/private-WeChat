@@ -1,11 +1,14 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"net/http"
 	API "turan.com/WeChat-Private/api"
 	"turan.com/WeChat-Private/dao/cache"
 	"turan.com/WeChat-Private/logic"
+	"turan.com/WeChat-Private/model"
 	"turan.com/WeChat-Private/utils"
 )
 
@@ -57,4 +60,28 @@ func GetUv(ctx *gin.Context) {
 		"uv_time":     uv[1],
 		"uv_max":      uv[2],
 		"uv_max_time": uv[3]})
+}
+
+//上传头像
+func UpLoadImage(ctx *gin.Context) {
+	uid, _ := ctx.Get("uid")
+	file, err := ctx.FormFile("image")
+	if err != nil {
+		ctx.JSON(http.StatusOK, gin.H{"msg": err.Error()})
+		return
+	}
+	zap.L().Debug(file.Filename)
+	//dst：upload文件夹必须存在
+	dst := "upload/" + uid.(string) + file.Filename
+	err = ctx.SaveUploadedFile(file, dst)
+	if err != nil {
+		ctx.JSON(http.StatusOK, gin.H{"msg": err.Error()})
+	}
+	//根据uid存储数据库
+	err = model.ImageUpload(fmt.Sprintf("http://127.0.0.1:8080/user/image/%s", dst), uid.(string))
+	if err != nil {
+		ctx.String(http.StatusOK, err.Error())
+		return
+	}
+	ctx.String(http.StatusOK, fmt.Sprintf("%s 上传成功", file.Filename))
 }

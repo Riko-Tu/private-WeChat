@@ -11,6 +11,7 @@ type user struct {
 	Id         int    `gorm:"primary_key,column:id"`
 	Name       string `gorm:"column:name"`
 	Uid        string `gorm:"column:uid"`
+	Image      string `gorm:"column:image"`
 	Birthday   int64  `gorm:"column:birthday"`
 	Area       string `gorm:"column:area"`
 	Email      string `gorm:"column:email;default:'22'"`
@@ -50,6 +51,18 @@ func EmailRegister(email string) error {
 	err := database.GetDB().Create(&user).Error
 	if err != nil {
 		fmt.Println(err.Error())
+		return err
+	}
+	return nil
+}
+
+//上传图片
+func ImageUpload(imagePath, uid string) error {
+	//结构体内部可以添加where条件
+
+	user := &user{Uid: uid}
+	err := database.GetDB().Model(user).Update("image", imagePath).Error
+	if err != nil {
 		return err
 	}
 	return nil

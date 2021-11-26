@@ -15,7 +15,6 @@ func AuthMiddleWare() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//从http请求中获取token
 		tokenString := ctx.GetHeader("Authorization")
-		zap.L().Debug(tokenString)
 		//检测token是否为空  ||  是否以bearer 开头
 		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer ") {
 			ctx.JSON(http.StatusOK, gin.H{"code": logic.TokenParseFailed.Code, "msg": logic.TokenParseFailed.Msg})
@@ -25,7 +24,6 @@ func AuthMiddleWare() gin.HandlerFunc {
 		}
 		//去除bearer
 		tokenString = tokenString[len("bearer "):]
-		zap.L().Debug(tokenString)
 		//解析token
 		claims, err := utils.ParseToken(tokenString)
 		if err != nil {
