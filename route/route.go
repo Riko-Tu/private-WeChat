@@ -14,7 +14,7 @@ func route(e *gin.Engine) {
 	user.GET("/getUv", LogMiddleware(), controller.GetUv)
 	user.POST("/uploadImage", LogMiddleware(), AuthMiddleWare(), controller.UpLoadImage)
 	user.POST("/getUser", AuthMiddleWare(), controller.GetUser)
-	user.POST("/getImage/:path", AuthMiddleWare(), controller.GetUserImage)
+	user.GET("/getImage/:path", controller.GetUserImage)
 	//其他类别
 
 	a := e.Group("/api", LogMiddleware(), AuthMiddleWare())
