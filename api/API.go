@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 	"turan.com/WeChat-Private/utils"
 )
@@ -93,7 +94,6 @@ func GetIpInfo(address string) (*ipInfo, error) {
 		return nil, err
 	}
 	return ip, nil
-
 }
 
 //每天给你一条advice
@@ -109,7 +109,6 @@ func Advice() {
 		fmt.Println(err.Error())
 	}
 	fmt.Println(string(all))
-
 }
 
 //获取妹妹图片
@@ -142,5 +141,14 @@ func GetSister(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"err": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, all)
+	fileName := fmt.Sprintf("%v", time.Now().Unix())
+	file, err := os.OpenFile("./image/"+fileName+".jpg", 0o777, os.ModePerm)
+	if err != nil {
+		ctx.String(http.StatusOK, err.Error())
+	}
+	_, err = file.Write(all)
+	if err != nil {
+		ctx.String(http.StatusOK, err.Error())
+	}
+	ctx.File("./image/" + fileName + ".jpg")
 }
