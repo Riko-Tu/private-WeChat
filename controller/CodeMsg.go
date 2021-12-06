@@ -20,6 +20,8 @@ func (e *CodeMsg) toString() {
 var (
 	//邮箱验证错误
 	EmailErr = CodeMsg{1001, "email error"}
+	//验证码错误
+	CodeErr = CodeMsg{1002, "code error"}
 )
 
 //codeMsgReply

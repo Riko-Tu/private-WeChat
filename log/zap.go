@@ -93,7 +93,8 @@ func getJsonEncoder() zapcore.Encoder {
 
 	encoderConfig := zap.NewProductionEncoderConfig()
 
-	encoderConfig.EncodeTime = timeEncoder
+	encoderConfig.EncodeTime = timeEncoder //zapcore.ISO8601TimeEncoder
+
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 	//encoderConfig.EncodeLevel = zapcore.LowercaseColorLevelEncoder
 

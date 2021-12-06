@@ -4,6 +4,8 @@ go 1.16
 
 require (
 	github.com/BurntSushi/toml v0.4.1 // indirect
+	github.com/PaesslerAG/jsonpath v0.1.1
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-playground/validator/v10 v10.9.0 // indirect
 	github.com/go-redis/redis v6.15.9+incompatible
@@ -13,6 +15,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/onsi/gomega v1.16.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/viper v1.9.0
 	github.com/stretchr/testify v1.7.0
 	github.com/ugorji/go v1.2.6 // indirect
