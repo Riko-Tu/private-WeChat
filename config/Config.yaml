@@ -13,7 +13,7 @@ api:
 
 #阿里巴巴云存储
 alibaba:
-  accessKeyID: LTAI5tBqByzy3nbto6CqwE6e
+  accessKey: TFRBSTV0QnFCeXp5M25idG82Q3F3RTZl
   accessKeySecret: Qgb10mwFeGYJB2LWN6KvfDNuNd9GQo
   cors:
     bucket: chat-image-2021-12-03

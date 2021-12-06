@@ -8,6 +8,7 @@ import (
 	"go.uber.org/zap/zapcore"
 	"testing"
 	"time"
+	API "turan.com/WeChat-Private/api"
 	"turan.com/WeChat-Private/cache"
 	_ "turan.com/WeChat-Private/config"
 	"turan.com/WeChat-Private/dao/database"
@@ -43,6 +44,9 @@ func setUp() {
 	//redis初始化
 	cache.SetUp()
 
+	//cors初始化
+	API.CorsInfo()
+
 	//路由初始化
 	err = route.SetUp()
 	if err != nil {
@@ -60,8 +64,12 @@ type uvInfo struct {
 
 func main() {
 
-	setUp()
+	//setUp()
 
-	li := []interface{}{0}
-	fmt.Println(li[0])
+	//decodeString, _ := base64.StdEncoding.DecodeString(viper.GetString("alibaba.accessKey"))
+	//
+	API.CorsInfo()
+
+	API.GetCors().GetDucketList()
+
 }
