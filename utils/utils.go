@@ -31,22 +31,18 @@ func GetCode() string {
 	return fmt.Sprintf("%06v", rnd.Int31n(1000000))
 }
 
-var (
-	from     = viper.GetString("smtp.from")
-	host     = viper.GetString("smtp.qq.host")
-	port, _  = strconv.Atoi(viper.GetString("smtp.qq.port"))
-	username = viper.GetString("smtp.qq.username")
-	password = viper.GetString("smtp.qq.password")
-)
-
 //发送邮件
 func SendEmail(addressEmail string, code string) error {
+	from := viper.GetString("smtp.from")
+	host := viper.GetString("smtp.qq.host")
+	port, _ := strconv.Atoi(viper.GetString("smtp.qq.port"))
+	username := viper.GetString("smtp.qq.username")
+	password := viper.GetString("smtp.qq.password")
 	m := gomail.NewMessage()                   //获取邮件对象
 	m.SetHeader("From", "wechat"+"<"+from+">") //发件人邮箱
 	m.SetHeader("To", addressEmail)            //收件人邮箱
 	m.SetHeader("Subject", "chat【验证码】")        //标题
 	m.SetBody("text/html", fmt.Sprintf("你的验证码是%s", code))
-
 	//创建smtp拨号器
 	d := gomail.Dialer{Host: host, Port: port, Username: username, Password: password}
 	//使用拨号器发送message

@@ -98,6 +98,7 @@ func GetUserImage(ctx *gin.Context) {
 
 }
 
+//获取用户信息
 func GetUser(ctx *gin.Context) {
 	uid, _ := ctx.Get("uid")
 	user, err := model.GetUserById(uid.(string))

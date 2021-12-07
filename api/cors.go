@@ -1,6 +1,7 @@
 package API
 
 import (
+	"bytes"
 	"encoding/base64"
 	"fmt"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
@@ -85,8 +86,36 @@ func (c Cors) GetDucketList() {
 }
 
 // 上传文件
+func (c Cors) UploadFile(fileName string, fileValues []byte) {
+	bucket, err := corsClient.Bucket(c.Bucket)
+	if err != nil {
+		panic(err.Error())
+	}
+	//指定标准存储
+	Standard := oss.ObjectStorageClass(oss.StorageStandard)
+
+	// 指定存储类型为归档存储。
+	// storageType := oss.ObjectStorageClass(oss.StorageArchive)
+
+	// 指定访问权限为公共读，缺省为继承bucket的权限。
+	objectAcl := oss.ObjectACL(oss.ACLPublicRead)
+	err = bucket.PutObject(fileName, bytes.NewReader(fileValues), Standard, objectAcl)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+}
 
 // 下载文件
+func (c Cors) DownLoadFile(ObjectFilePath, savePath string) {
+	bucket, err := corsClient.Bucket(c.Bucket)
+	if err != nil {
+		panic(err.Error())
+	}
+	err = bucket.GetObjectToFile(ObjectFilePath, savePath)
+	if err != nil {
+		panic(err.Error())
+	}
+}
 
 // 获取路径下文件列表
 

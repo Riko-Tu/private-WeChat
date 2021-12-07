@@ -17,6 +17,7 @@ func SendEmail(email string) LogicMsg {
 		//存储email与uid
 		err := model.EmailRegister(email)
 		if err != nil {
+			SendEmailFailed.Msg = err.Error()
 			return SendEmailFailed
 		}
 
@@ -30,6 +31,7 @@ func SendEmail(email string) LogicMsg {
 	//发送邮件
 	err = utils.SendEmail(email, code)
 	if err != nil {
+		SendEmailFailed.Msg = err.Error()
 		return SendEmailFailed
 	}
 	return SendEmailSuccess

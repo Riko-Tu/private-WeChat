@@ -7,7 +7,6 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"testing"
-	"time"
 	API "turan.com/WeChat-Private/api"
 	"turan.com/WeChat-Private/cache"
 	_ "turan.com/WeChat-Private/config"
@@ -54,22 +53,8 @@ func setUp() {
 	}
 }
 
-type uvInfo struct {
-	Uv        float32   `json:"uv"`
-	UvTime    time.Time `json:"uv_time"`
-	UvMax     float32   `json:"uv_max"`
-	Ozone     float32   `json:"ozone"`
-	OzoneTime time.Time `json:"ozone_time"`
-}
-
 func main() {
 
-	//setUp()
-
-	//decodeString, _ := base64.StdEncoding.DecodeString(viper.GetString("alibaba.accessKey"))
-	//
-	API.CorsInfo()
-
-	API.GetCors().GetDucketList()
+	setUp()
 
 }

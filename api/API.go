@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -143,6 +144,8 @@ func GetSister(ctx *gin.Context) {
 	}
 	fileName := fmt.Sprintf("%v", time.Now().Unix())
 	file, err := os.OpenFile("./image/"+fileName+".jpg", 0o777, os.ModePerm)
+	filePath := viper.GetString("alibaba.cors.chatImageSisterDir") + fileName + ".png"
+	GetCors().UploadFile(filePath, all)
 	if err != nil {
 		ctx.String(http.StatusOK, err.Error())
 	}

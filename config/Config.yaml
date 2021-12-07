@@ -19,7 +19,7 @@ alibaba:
     bucket: chat-image-2021-12-03
     Endpoint: oss-cn-beijing.aliyuncs.com
     chatImagePortraitDir: /userPortrait/
-    chatIamgeSisterDir: /sister/
+    chatImageSisterDir: sister/
 
 
 #项目环境配置
