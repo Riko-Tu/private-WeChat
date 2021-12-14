@@ -16,6 +16,7 @@ func route(e *gin.Engine) {
 	user.POST("/getUser", AuthMiddleWare(), controller.GetUser)
 	user.GET("/getImage/:path", controller.GetUserImage)
 	//其他类别
+	user.GET("/ws", controller.Chat)
 
 	a := e.Group("/api", LogMiddleware(), AuthMiddleWare())
 	a.GET("/sister", API.GetSister)
