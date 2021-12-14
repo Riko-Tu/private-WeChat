@@ -79,22 +79,23 @@ func UpLoadImage(ctx *gin.Context) {
 	err = ctx.SaveUploadedFile(file, dst)
 	if err != nil {
 		ctx.JSON(http.StatusOK, gin.H{"msg": err.Error()})
+		return
 	}
 	//根据uid存储数据库
-	err = model.ImageUpload(fmt.Sprintf("http://127.0.0.1:8080/user/getImage/%s", fileName), uid.(string))
+	fileUrl:=fmt.Sprintf("http://127.0.0.1:8080/user/getImage/%s", fileName)
+	err = model.ImageUpload(fileUrl, uid.(string))
 	if err != nil {
 		ctx.String(http.StatusOK, err.Error())
 		return
 	}
-	ctx.String(http.StatusOK, fmt.Sprintf("%s 上传成功", file.Filename))
+	ctx.JSON(http.StatusOK,gin.H{"msg":"上传成功","Url": fileUrl} )
 }
 
 //获取用户头像
 func GetUserImage(ctx *gin.Context) {
 	//uid, _ := ctx.Get("uid")
 	filePath := ctx.Param("path")
-
-	ctx.File("./upload/" + filePath)
+	ctx.File("./upload/"+filePath)
 
 }
 
