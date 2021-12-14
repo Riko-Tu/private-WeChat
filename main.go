@@ -54,7 +54,6 @@ func setUp() {
 }
 
 func main() {
-
 	setUp()
 
 }
