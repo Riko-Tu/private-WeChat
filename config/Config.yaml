@@ -18,8 +18,8 @@ alibaba:
   cors:
     bucket: chat-image-2021-12-03
     Endpoint: oss-cn-beijing.aliyuncs.com
-    chatImagePortraitDir: userPortrait/
-    chatImageSisterDir: sister/
+    chatFileDir: file/
+    chatImageDir: image/
 
 
 #项目环境配置

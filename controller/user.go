@@ -3,7 +3,9 @@ package controller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
+	"log"
 	"net/http"
 	"strings"
 	API "turan.com/WeChat-Private/api"
@@ -73,30 +75,77 @@ func UpLoadImage(ctx *gin.Context) {
 	}
 	zap.L().Debug(file.Filename)
 	//dst：upload文件夹必须存在
-	fileName := uid.(string)[:6] + strings.Replace(file.Filename, " ", "", -1)
-	dst := "upload/" + fileName
 
-	err = ctx.SaveUploadedFile(file, dst)
+	split := strings.Split(file.Filename, ".")
+	subffix := split[len(split)-1]
+	//获取ocrs
+	log.Println(subffix, file.Size)
+	bytes := make([]byte, 1024000000)
+	cors := API.GetCors()
+	open, err := file.Open()
+	number, err := open.Read(bytes)
 	if err != nil {
-		ctx.JSON(http.StatusOK, gin.H{"msg": err.Error()})
+		ctx.String(http.StatusOK, "文件读取错误："+err.Error())
 		return
 	}
-	//根据uid存储数据库
-	fileUrl := fmt.Sprintf("http://127.0.0.1:8080/user/getImage/%s", fileName)
-	err = model.ImageUpload(fileUrl, uid.(string))
-	if err != nil {
-		ctx.String(http.StatusOK, err.Error())
-		return
+	fileName := uid.(string)[:6] + strings.Replace(file.Filename, " ", "", -1)
+	if strings.EqualFold(strings.ToLower(subffix), strings.ToLower("png")) ||
+		strings.EqualFold(strings.ToLower(subffix), strings.ToLower("png")) {
+		//存入图库
+		corsFilePath := viper.GetString("alibaba.cors.chatFileDir") + fileName
+		err := cors.UploadFile(corsFilePath, bytes[:number])
+		if err != nil {
+			ctx.String(http.StatusOK, "文件上传失败："+err.Error())
+			return
+		}
+		//根据uid存储数据库
+		fileUrl := fmt.Sprintf("http://127.0.0.1:8080/user/getImage/%s", fileName)
+		err = model.ImageUpload(fileUrl, uid.(string))
+		if err != nil {
+			ctx.String(http.StatusOK, err.Error())
+			return
+		}
+		ctx.JSON(http.StatusOK, gin.H{"msg": "上传成功", "Url": fileUrl})
+
+	} else {
+		//存入文件库
+		corsFilePath := viper.GetString("alibaba.cors.chatImageDir") + fileName
+		err := cors.UploadFile(corsFilePath, bytes[:number])
+		if err != nil {
+			ctx.String(http.StatusOK, "文件上传失败："+err.Error())
+			return
+		}
+		fileUrl := fmt.Sprintf("http://127.0.0.1:8080/user/getImage/%s", fileName)
+		ctx.JSON(http.StatusOK, gin.H{"msg": "上传成功", "Url": fileUrl})
 	}
-	ctx.JSON(http.StatusOK, gin.H{"msg": "上传成功", "Url": fileUrl})
+
 }
 
-//获取用户头像
+//获取文件
 func GetUserImage(ctx *gin.Context) {
 	//uid, _ := ctx.Get("uid")
-	filePath := ctx.Param("path")
-	ctx.File("./upload/" + filePath)
+	fileName := ctx.Param("path")
+	split := strings.Split(fileName, ".")
+	subffix := split[len(split)-1]
+	if strings.EqualFold(strings.ToLower(subffix), strings.ToLower("jpg")) ||
+		strings.EqualFold(strings.ToLower(subffix), strings.ToLower("png")) {
+		corsFilePath := viper.GetString("alibaba.cors.chatImageDir") + fileName
+		bytes, err := API.GetCors().DownLoadFile(corsFilePath)
+		if err != nil {
+			ctx.String(http.StatusOK, "Err:"+err.Error())
+			return
+		}
+		ctx.JSON(http.StatusOK, gin.H{"data": bytes})
+	} else {
+		corsFilePath := viper.GetString("alibaba.cors.chatFileDir") + fileName
+		bytes, err := API.GetCors().DownLoadFile(corsFilePath)
+		if err != nil {
+			ctx.String(http.StatusOK, "Err:"+err.Error())
+			return
+		}
 
+		ctx.JSON(http.StatusOK, gin.H{"data": bytes})
+	}
 }
 
 //获取用户信息

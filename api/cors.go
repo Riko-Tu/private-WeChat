@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/spf13/viper"
+	"io/ioutil"
 	"os"
 )
 
@@ -86,10 +87,10 @@ func (c Cors) GetDucketList() {
 }
 
 // 上传文件
-func (c Cors) UploadFile(fileName string, fileValues []byte) {
+func (c Cors) UploadFile(fileName string, fileValues []byte) error {
 	bucket, err := corsClient.Bucket(c.Bucket)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 	//指定标准存储
 	Standard := oss.ObjectStorageClass(oss.StorageStandard)
@@ -100,21 +101,26 @@ func (c Cors) UploadFile(fileName string, fileValues []byte) {
 	// 指定访问权限为公共读，缺省为继承bucket的权限。
 	objectAcl := oss.ObjectACL(oss.ACLPublicRead)
 	err = bucket.PutObject(fileName, bytes.NewReader(fileValues), Standard, objectAcl)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	return err
 }
 
-// 下载文件
-func (c Cors) DownLoadFile(ObjectFilePath, savePath string) {
+// 下载文件流
+func (c Cors) DownLoadFile(ObjectFilePath string) ([]byte, error) {
 	bucket, err := corsClient.Bucket(c.Bucket)
 	if err != nil {
-		panic(err.Error())
+		return nil, err
 	}
-	err = bucket.GetObjectToFile(ObjectFilePath, savePath)
+	object, err := bucket.GetObject(ObjectFilePath)
 	if err != nil {
-		panic(err.Error())
+		return nil, err
 	}
+	defer object.Close()
+	all, err := ioutil.ReadAll(object)
+	if err != nil {
+
+		return nil, err
+	}
+	return all, nil
 }
 
 // 获取路径下文件列表
