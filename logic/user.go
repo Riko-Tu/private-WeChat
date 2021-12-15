@@ -24,7 +24,7 @@ func SendEmail(email string) LogicMsg {
 	}
 
 	//存储验证码
-	err := cache.SaveCode(email, code)
+	err := cache.GetRdb().SaveCode(email, code)
 	if err != nil {
 		return CodeSaveFailed
 	}
@@ -48,7 +48,7 @@ func EmailLogin(email string) (error LogicMsg) {
 		return CreateTokenFailed
 	}
 	//通过uid存储token
-	err = cache.SaveTokenByUid(user.Uid, token)
+	err = cache.GetRdb().SaveTokenByUid(user.Uid, token)
 	//存储失败
 	if err != nil {
 		return SaveTokenFailed

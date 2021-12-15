@@ -18,7 +18,7 @@ func EmailLogin(c *gin.Context) {
 	code := c.PostForm("code")
 	//邮箱校验
 	isPass := utils.VerifyEmail(email)
-	getcode, err := cache.GetCode(email)
+	getcode, err := cache.GetRdb().GetCode(email)
 	if err != nil {
 		CodeMsgReply(c, CodeErr)
 		return
@@ -82,20 +82,20 @@ func UpLoadImage(ctx *gin.Context) {
 		return
 	}
 	//根据uid存储数据库
-	fileUrl:=fmt.Sprintf("http://127.0.0.1:8080/user/getImage/%s", fileName)
+	fileUrl := fmt.Sprintf("http://127.0.0.1:8080/user/getImage/%s", fileName)
 	err = model.ImageUpload(fileUrl, uid.(string))
 	if err != nil {
 		ctx.String(http.StatusOK, err.Error())
 		return
 	}
-	ctx.JSON(http.StatusOK,gin.H{"msg":"上传成功","Url": fileUrl} )
+	ctx.JSON(http.StatusOK, gin.H{"msg": "上传成功", "Url": fileUrl})
 }
 
 //获取用户头像
 func GetUserImage(ctx *gin.Context) {
 	//uid, _ := ctx.Get("uid")
 	filePath := ctx.Param("path")
-	ctx.File("./upload/"+filePath)
+	ctx.File("./upload/" + filePath)
 
 }
 
