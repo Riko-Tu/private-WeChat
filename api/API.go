@@ -111,7 +111,14 @@ func Advice() {
 	fmt.Println(string(all))
 }
 
-//获取妹妹图片
+// @Summary 获取图片信息
+// @Tags 独立接口
+// @Accept  json
+// @Produce  json
+// @Param authorization header string true "Bearer Token"
+// @Success 200 {string} string
+// @Failure 500 {string} json
+// @Router /api/sister [get]
 func GetSister(ctx *gin.Context) {
 	cleint := &http.Client{
 		Transport:     nil,
@@ -123,22 +130,22 @@ func GetSister(ctx *gin.Context) {
 	get, err := http.NewRequest("get", usrl2, nil)
 	get.Header = map[string][]string{"User-Agent": {"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36 Edg/95.0.1020.53"}}
 	if err != nil {
-		ctx.JSON(http.StatusOK, gin.H{"err": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 		return
 	}
 	//httpcli发送请求
 	do, err := cleint.Do(get)
 	if err != nil {
-		ctx.JSON(http.StatusOK, gin.H{"err": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 		return
 	}
 	if do.StatusCode != 200 {
-		ctx.JSON(http.StatusOK, gin.H{"err": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 		return
 	}
 	all, err := ioutil.ReadAll(do.Body)
 	if err != nil {
-		ctx.JSON(http.StatusOK, gin.H{"err": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 		return
 	}
 	fileName := fmt.Sprintf("%v", time.Now().Unix()) + ".png"
@@ -146,7 +153,7 @@ func GetSister(ctx *gin.Context) {
 	filePath := viper.GetString("alibaba.cors.chatImageDir") + fileName
 	err = GetCors().UploadFile(filePath, all)
 	if err != nil {
-		ctx.String(http.StatusOK, err.Error())
+		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 

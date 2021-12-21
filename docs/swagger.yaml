@@ -1,0 +1,36 @@
+basePath: /
+host: 127.0.0.1:8080
+info:
+  contact:
+    name: 徒然
+    url: http://www.swagger.io/support
+  description: 测试环境
+  termsOfService: http://swagger.io/terms/
+  title: wechat
+  version: "1.0"
+paths:
+  /api/sister:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 获取图片信息
+      tags:
+      - 独立接口
+swagger: "2.0"

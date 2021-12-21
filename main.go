@@ -53,6 +53,17 @@ func setUp() {
 	}
 }
 
+// @title wechat
+// @version 1.0
+// @description 测试环境
+// @termsOfService http://swagger.io/terms/
+// @contact.name 徒然
+// @contact.url http://www.swagger.io/support
+// @contact.email
+
+//@host 127.0.0.1:8080
+//@BasePath /
+
 func main() {
 	setUp()
 

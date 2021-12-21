@@ -2,11 +2,16 @@ package route
 
 import (
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	API "turan.com/WeChat-Private/api"
 	"turan.com/WeChat-Private/controller"
+	_ "turan.com/WeChat-Private/docs"
 )
 
 func route(e *gin.Engine) {
+	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+
 	//用户相关
 	user := e.Group("/user")
 	user.POST("/emailLogin", controller.EmailLogin)
