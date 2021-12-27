@@ -1,0 +1,163 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "测试环境",
+        "title": "wechat",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "徒然",
+            "url": "http://www.swagger.io/support"
+        },
+        "version": "1.0"
+    },
+    "host": "127.0.0.1:8080",
+    "basePath": "/",
+    "paths": {
+        "/api/sister": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API"
+                ],
+                "summary": "获取图片信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "url",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/getImage/{:path}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "获取图片",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "文件的名称",
+                        "name": "path",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/getUser": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "获取用户信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.user"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.user": {
+            "type": "object",
+            "properties": {
+                "area": {
+                    "type": "string"
+                },
+                "birthday": {
+                    "type": "integer"
+                },
+                "createTime": {
+                    "description": "使用mysql使用int来存储时间，如果使用其他日期类型数据，则该字段不能为空",
+                    "type": "integer"
+                },
+                "deleteTime": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "slogan": {
+                    "type": "string"
+                },
+                "telephone": {
+                    "type": "string"
+                },
+                "uid": {
+                    "type": "string"
+                },
+                "updateTime": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

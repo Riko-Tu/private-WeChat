@@ -7,9 +7,9 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"testing"
-	"time"
-	"turan.com/WeChat-Private/cache"
+	API "turan.com/WeChat-Private/api"
 	_ "turan.com/WeChat-Private/config"
+	"turan.com/WeChat-Private/dao/cache"
 	"turan.com/WeChat-Private/dao/database"
 	"turan.com/WeChat-Private/log"
 	"turan.com/WeChat-Private/route"
@@ -43,6 +43,9 @@ func setUp() {
 	//redis初始化
 	cache.SetUp()
 
+	//cors初始化
+	API.CorsInfo()
+
 	//路由初始化
 	err = route.SetUp()
 	if err != nil {
@@ -50,18 +53,18 @@ func setUp() {
 	}
 }
 
-type uvInfo struct {
-	Uv        float32   `json:"uv"`
-	UvTime    time.Time `json:"uv_time"`
-	UvMax     float32   `json:"uv_max"`
-	Ozone     float32   `json:"ozone"`
-	OzoneTime time.Time `json:"ozone_time"`
-}
+// @title wechat
+// @version 1.0
+// @description 测试环境
+// @termsOfService http://swagger.io/terms/
+// @contact.name 徒然
+// @contact.url http://www.swagger.io/support
+// @contact.email
+
+//@host 127.0.0.1:8080
+//@BasePath /
 
 func main() {
-
 	setUp()
 
-	li := []interface{}{0}
-	fmt.Println(li[0])
 }

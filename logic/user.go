@@ -17,19 +17,21 @@ func SendEmail(email string) LogicMsg {
 		//存储email与uid
 		err := model.EmailRegister(email)
 		if err != nil {
+			SendEmailFailed.Msg = err.Error()
 			return SendEmailFailed
 		}
 
 	}
 
 	//存储验证码
-	err := cache.SaveCode(email, code)
+	err := cache.GetRdb().SaveCode(email, code)
 	if err != nil {
 		return CodeSaveFailed
 	}
 	//发送邮件
 	err = utils.SendEmail(email, code)
 	if err != nil {
+		SendEmailFailed.Msg = err.Error()
 		return SendEmailFailed
 	}
 	return SendEmailSuccess
@@ -46,7 +48,7 @@ func EmailLogin(email string) (error LogicMsg) {
 		return CreateTokenFailed
 	}
 	//通过uid存储token
-	err = cache.SaveTokenByUid(user.Uid, token)
+	err = cache.GetRdb().SaveTokenByUid(user.Uid, token)
 	//存储失败
 	if err != nil {
 		return SaveTokenFailed

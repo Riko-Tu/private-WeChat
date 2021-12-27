@@ -13,13 +13,13 @@ api:
 
 #阿里巴巴云存储
 alibaba:
-  accessKeyID: -------
+  accessKey: TFRBSTV0QnFCeXp5M25idG82Q3F3RTZl
   accessKeySecret: Qgb10mwFeGYJB2LWN6KvfDNuNd9GQo
   cors:
     bucket: chat-image-2021-12-03
     Endpoint: oss-cn-beijing.aliyuncs.com
-    chatImagePortraitDir: /userPortrait/
-    chatIamgeSisterDir: /sister/
+    chatFileDir: file/
+    chatImageDir: image/
 
 
 #项目环境配置
