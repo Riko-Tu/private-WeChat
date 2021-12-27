@@ -121,7 +121,13 @@ func UpLoadImage(ctx *gin.Context) {
 
 }
 
-//获取文件
+// @Summary 获取图片
+// @Tags 用户模块
+// @Accept json
+// @Produce json
+// @Param path query  string true "文件的名称"
+// @Success 200 {string} json
+// @router /getImage/{:path} [get]
 func GetUserImage(ctx *gin.Context) {
 	//uid, _ := ctx.Get("uid")
 	fileName := ctx.Param("path")
@@ -148,7 +154,13 @@ func GetUserImage(ctx *gin.Context) {
 	}
 }
 
-//获取用户信息
+// @Summary 获取用户信息
+// @Tags 用户模块
+// @Accept  json
+// @Produce  json
+// @Param authorization header string true "Bearer Token"
+// @Success 200 {object} model.user
+// @Router /user/getUser [post]
 func GetUser(ctx *gin.Context) {
 	uid, _ := ctx.Get("uid")
 	user, err := model.GetUserById(uid.(string))

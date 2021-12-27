@@ -176,5 +176,4 @@ func Chat(ctx *gin.Context) {
 
 	go recvPoce(conn, uid)
 	select {}
-
 }

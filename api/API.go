@@ -112,11 +112,11 @@ func Advice() {
 }
 
 // @Summary 获取图片信息
-// @Tags 独立接口
+// @Tags API
 // @Accept  json
 // @Produce  json
 // @Param authorization header string true "Bearer Token"
-// @Success 200 {string} string
+// @Success 200 {string} string "url"
 // @Failure 500 {string} json
 // @Router /api/sister [get]
 func GetSister(ctx *gin.Context) {

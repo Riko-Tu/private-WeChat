@@ -1,4 +1,35 @@
 basePath: /
+definitions:
+  model.user:
+    properties:
+      area:
+        type: string
+      birthday:
+        type: integer
+      createTime:
+        description: 使用mysql使用int来存储时间，如果使用其他日期类型数据，则该字段不能为空
+        type: integer
+      deleteTime:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      slogan:
+        type: string
+      telephone:
+        type: string
+      uid:
+        type: string
+      updateTime:
+        type: integer
+    type: object
 host: 127.0.0.1:8080
 info:
   contact:
@@ -23,7 +54,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: url
           schema:
             type: string
         "500":
@@ -32,5 +63,45 @@ paths:
             type: string
       summary: 获取图片信息
       tags:
-      - 独立接口
+      - API
+  /getImage/{:path}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 文件的名称
+        in: query
+        name: path
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 获取图片
+      tags:
+      - 用户模块
+  /user/getUser:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.user'
+      summary: 获取用户信息
+      tags:
+      - 用户模块
 swagger: "2.0"
